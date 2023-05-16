@@ -4,9 +4,260 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+        crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://kit.fontawesome.com/07cd59d18d.js" crossorigin="anonymous"></script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"
+    >
+    </script>
     <title></title>
+    <style>
+        body {
+            margin: 0;
+            background-color: #E9EDF1;
+        }
+        .title {
+            text-align: center;
+            /* border: 1px solid black; */
+            height: 300px;
+            background: linear-gradient(to right, #0F2027, #203A43, #2C5364);
+        }
+        
+        .title > h1 {
+            margin: 0px;
+            line-height: 300px;
+            color: white
+        }
+        .container {
+            margin-left: auto;
+            margin-right: auto;
+            padding: 20px;
+            box-sizing: border-box;
+            border: 1px solid black;
+            width: 1500px; 
+        }
+
+        .container > .info-box {
+            border: 1px solid black;
+            height: 200px;   
+        }
+        .container > .input-container {
+            display: none;
+            justify-content: center;
+            margin-bottom: 30px;
+            /* transition: 1s; */
+            transition: smooth;
+        }
+        .container > .input-container > .input-box {
+            display: block;
+            border: 1px solid black;
+            width: 500px;
+            /* height: 300px; */
+            border-radius: 10px;
+            padding: 20px;
+            box-sizing: border-box;
+
+        }
+        .container > .input-container > .input-box > .input-list {
+            margin-top: 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+        }
+
+        .container > .input-container > .input-box > .input-list > .button {
+            margin-top: 1rem;
+            text-align: center;
+        }
+        .container > .add-box {
+            /* border: 1px solid black; */
+            height: 100px;
+            display: flex;
+            align-items: center;
+            align-content: center;
+            justify-content: space-evenly;
+        }
+        .container > .add-box > .line {
+            width: 30rem;
+            border: 1px solid black;
+        }
+        .container > .add-box > .circle-in-button {
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            line-height: 50px;
+            border-radius: 70%;
+        }
+        .container > .add-box > .plus-button {
+            font-size: 35px;
+            cursor: pointer;
+        }
+        .container > .add-box > .plus-button:hover {
+            font-size: 35px;
+            color: white;
+            cursor: pointer;
+        }
+        .story-list {
+            padding: 20px;
+            box-sizing: border-box;
+            border: 1px solid black;
+            /* height: 500px; */
+            display: flex;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+        }
+
+        .story-list > .my-story {
+            border: 1px solid black;
+            width: 45%;
+            height: 400px;
+            overflow: hidden;
+            border-radius: 10px;
+            margin: 1.651rem;
+        }
+
+        .story-list > .my-story > img {
+            
+            background-size: cover;
+            background-position: center;
+        }
+
+        .story-list > .my-story > .text {
+            padding: 20px;
+            box-sizing: border-box;
+        }
+         
+    </style>
+    <script>
+        $(document).ready(function () {
+            showMyStories();
+        });
+        function showAddBox() {
+            $('.input-container').fadeToggle().css('display', 'flex');
+        }
+
+        function addNewStory() {
+            let imgUrl = document.getElementById('img-url').value;
+            let storyTitle = document.getElementById('story-title').value;
+            let storyContent = document.getElementById('text').value;
+
+            // console.log(imgUrl, storyTitle, story)
+            let formData = new FormData();
+            
+            formData.append("imgUrl", imgUrl);
+            formData.append("storyTitle", storyTitle);
+            formData.append("storyContent", storyContent);
+            
+            fetch('/story', {
+                    method: "POST",
+                    body: formData,
+                })
+                .then((res) => res.json())
+                .then((data) => {
+                    alert(data.msg)
+                })
+        }
+
+        function showMyStories() {
+            fetch('/story')
+                .then((res) => res.json())
+                .then((data) => {
+                    for(let idx = 0; idx < data.length; idx++) {
+                        let temp = `<div class="my-story">
+                            <img src="${data[idx].imgUrl}" height="60%" width="100%" alt="">
+                            <div class="text">
+                                <h4>${data[idx].storyTitle}</h4>
+                                <p>
+                                    ${data[idx].storyContent}
+                                    </p>
+                                    </div>
+                                    </div>`    
+                                    $('.story-list').append(temp)
+                    }
+                    console.log('data = ', data)
+                    // let myStories = 
+
+                })
+        }
+    </script>
 </head>
 <body>
-    <h1>민태영 페이지</h1>
+    <!-- 사이트 맨 위의 타이틀 -->
+    <div class="title">
+        <h1>안녕하세요 민태영입니다!</h1>        
+    </div>
+    <div class="container">
+        <div class="info-box">
+        </div>
+          <!-- 새 멤버 추가 -->
+          <div class="add-box">
+            <div class="line"></div>
+            <i class="fa-solid fa-plus plus-button" onclick="showAddBox()"></i>
+            <div class="line"></div>
+        </div>
+        <div class="input-container">
+            <div class="input-box">
+                <h4>새 글추가하기!</h4>
+                <div class="input-list">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="inputGroup-sizing-default">이미지</span>
+                        <input type="text" id="img-url" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="inputGroup-sizing-default">제목</span>
+                        <input type="text" id="story-title" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text">나의 이야기</span>
+                        <textarea class="form-control" id="text" aria-label="With textarea" style="height: 100px;"></textarea>
+                    </div>
+                    <div class="button">
+                        <button onclick="addNewStory()" type="button" class="btn btn-outline-primary">추가하기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="story-box">
+            <div class="story-list">
+                <!-- <div class="my-story">
+                    <img src="https://i.namu.wiki/i/IhFrc6uiSNlonNFRXzSNrKrhPKrjpmlmsB_SDg3x0PeW_L06BFuF7mOq8AcPDYjonfNpG64cQYsINU8sICeDpg.webp" height="60%" width="100%" alt="">
+                    <div class="text">
+                        <h4>타이틀</h4>
+                        <p>
+                            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Obcaecati iure enim ad suscipit eveniet ullam tempora vel, magni praesentium, tenetur excepturi molestias deleniti quis illum quaerat odit doloribus sint ratione.
+                        </p>
+                    </div>
+                </div>
+                <div class="my-story">
+                    <img src="https://i.namu.wiki/i/IhFrc6uiSNlonNFRXzSNrKrhPKrjpmlmsB_SDg3x0PeW_L06BFuF7mOq8AcPDYjonfNpG64cQYsINU8sICeDpg.webp" height="60%" width="100%" alt="">
+                    <div class="text">
+                        <h4>타이틀</h4>
+                        <p>
+                            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Obcaecati iure enim ad suscipit eveniet ullam tempora vel, magni praesentium, tenetur excepturi molestias deleniti quis illum quaerat odit doloribus sint ratione.
+                        </p>
+                    </div>
+                </div>
+                <div class="my-story">
+                    <img src="https://i.namu.wiki/i/IhFrc6uiSNlonNFRXzSNrKrhPKrjpmlmsB_SDg3x0PeW_L06BFuF7mOq8AcPDYjonfNpG64cQYsINU8sICeDpg.webp" height="60%" width="100%" alt="">
+                    <div class="text">
+                        <h4>타이틀</h4>
+                        <p>
+                            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Obcaecati iure enim ad suscipit eveniet ullam tempora vel, magni praesentium, tenetur excepturi molestias deleniti quis illum quaerat odit doloribus sint ratione.
+                        </p>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </div>
+    
 </body>
 </html>
