@@ -9,6 +9,10 @@ app = Flask(__name__)
 def home():
    return render_template('index.html')
 
+@app.route('/taeyoung')
+def memberpage():
+   return render_template('taeyoung.html')
+
 
 if __name__ == '__main__':
    app.run('0.0.0.0', port=5000, debug=True)

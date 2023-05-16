@@ -186,9 +186,12 @@
             $('.input-container').fadeToggle().css('display', 'flex');
         }
 
-        function addMember() {  
-            
-            alert('새멤버 추가')
+        // function addMember() {  
+        //     alert('새멤버 추가')
+        // }
+
+        function showpage(param) {
+            window.location.href="/taeyoung"
         }
     </script>
 </head>
@@ -255,7 +258,7 @@
                 <h3>우리 멤버 보고가세요~</h3>
             </div>
             <div class="member-list">
-                <div class="card" style="width: 20rem;">
+                <div class="card" style="width: 20rem;" onclick="showpage('taeyoung.html')">
                     <img src="https://cat-lab.co.kr/data/editor/2208/44260b1422d6d1c37cb8924eda0ff0da_1660874550_4264.jpg" class="card-img-top" alt="...">
                     <div class="card-body">
                         <h4>name</h4>
