@@ -40,8 +40,8 @@
         .container {
             padding: 30px;
             box-sizing: border-box;
-            /* border: 1px solid black; */
-            height: 1500px
+            border: 1px solid black;
+            width: 1500px
         }
         .container > .info-box {
             /* border: 1px solid black; */
@@ -58,15 +58,15 @@
             background-size: cover;
             background-position: center;
         }
-
+        
         .container > .info-box > .info-card {
             /* border: 1px solid black; */
             height: inherit;
             width: 50%;
             display: inline-block;
-            margin: 0;
             box-sizing: border-box;
             padding: 25px;
+            margin: 0;
         }
         
         
@@ -186,13 +186,14 @@
             $('.input-container').fadeToggle().css('display', 'flex');
         }
 
-        // function addMember() {  
-        //     alert('새멤버 추가')
-        // }
-
         function showpage(param) {
             window.location.href="/taeyoung"
         }
+
+        function addMember() {
+            document.getElementById()
+        }
+        
     </script>
 </head>
 <body>
@@ -233,16 +234,16 @@
                 <h4>새 멤버추가하기!</h4>
                 <div class="input-list">
                     <div class="input-group mb-3">
-                        <span class="input-group-text" id="inputGroup-sizing-default">이름</span>
+                        <span class="input-group-text" id="inputGroup-sizing-default name">이름</span>
                         <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
                     </div>
                     <div class="input-group mb-3">
-                        <span class="input-group-text" id="inputGroup-sizing-default">이미지</span>
+                        <span class="input-group-text" id="inputGroup-sizing-default img">이미지</span>
                         <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
                     </div>
                     <div class="input-group">
                         <span class="input-group-text">나의 TMI</span>
-                        <textarea class="form-control" aria-label="With textarea" style="height: 100px;"></textarea>
+                        <textarea class="form-control" aria-label="With textarea" id="text" style="height: 100px;"></textarea>
                     </div>
                     <div class="button">
                         <button onclick="addMember()" type="button" class="btn btn-outline-primary">추가하기</button>
