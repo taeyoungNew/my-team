@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+        crossorigin="anonymous"
+    />
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/all.min.css"
+    />
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"
+    >
+    </script>
+    
+    <title>9조가 궁금하니?</title>
+    <style>
+        body {
+            margin: 0;
+            background-color: #E9EDF1;
+        }
+        .title {
+            text-align: center;
+            /* border: 1px solid black; */
+            height: 300px;
+            background: linear-gradient(to right, #0F2027, #203A43, #2C5364);
+        }
+        
+        .title > h1 {
+            line-height: 300px;
+            color: white
+        }
+        .container {
+            padding: 30px;
+            box-sizing: border-box;
+            /* border: 1px solid black; */
+            height: 1500px
+        }
+        .container > .info-box {
+            /* border: 1px solid black; */
+            height: 320px;
+            display: flex;
+            justify-content: space-between;
+        } 
+        .container > .info-box > .img-card {
+            display: inline-block;
+            /* border: 1px solid black; */
+            width: 50%;
+            height: 320px;
+            background-image: url('https://sitem.ssgcdn.com/99/25/28/item/1000053282599_i1_1100.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .container > .info-box > .info-card {
+            /* border: 1px solid black; */
+            height: inherit;
+            width: 50%;
+            display: inline-block;
+            margin: 0;
+            box-sizing: border-box;
+            padding: 25px;
+        } 
+        .member-box {
+            /* border: 1px solid black; */
+        }
+        .member-box > .member-list {
+            display: flex;
+            flex-wrap: wrap; 
+            flex-direction: row;
+            justify-content: space-between;
+            /* align-content: space-between; */
+        }
+        .member-box > .member-list > .card {
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+        .box-padding {
+            padding: 20px;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+    <div class="title">
+        <h1>9조를 소개 합니다!</h1>        
+    </div>
+
+    <div class="container">
+        <div class="info-box">
+            <div class="img-card">
+
+            </div>
+            <div class="info-card">
+                <i class="fa-solid fa-users"></i>
+                <h3>우리는요</h3>
+                <p>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae ullam non sunt fugiat, quia facilis officiis porro beatae, optio cupiditate labore voluptas cumque necessitatibus culpa? Doloribus aperiam itaque facilis placeat.
+                </p>
+                <el>
+                    <li>팀 각오: 어쩌구</li>
+                    <li>특징 1: 어쩌구</li>
+                </el>
+            </div>
+        </div>
+        <hr>
+        <div class="member-box">
+            <div>
+                <i class="fa-solid fa-users"></i>
+                <h3>우리 멤버 보고가세요~</h3>
+            </div>
+            <div class="member-list">
+                <div class="card" style="width: 20rem;">
+                    <img src="https://cat-lab.co.kr/data/editor/2208/44260b1422d6d1c37cb8924eda0ff0da_1660874550_4264.jpg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h4>name</h4>
+                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    </div>
+                </div>
+                <div class="card" style="width: 20rem;">
+                    <img src="https://cat-lab.co.kr/data/editor/2208/44260b1422d6d1c37cb8924eda0ff0da_1660874550_4264.jpg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                      <h4>name</h4>   
+                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    </div>
+                </div>
+                <div class="card" style="width: 20rem;">
+                    <img src="https://cat-lab.co.kr/data/editor/2208/44260b1422d6d1c37cb8924eda0ff0da_1660874550_4264.jpg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                      <h4>name</h4>   
+                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    </div>
+                </div>
+                <div class="card" style="width: 20rem;">
+                    <img src="https://cat-lab.co.kr/data/editor/2208/44260b1422d6d1c37cb8924eda0ff0da_1660874550_4264.jpg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                      <h4>name</h4>   
+                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    </div>
+                </div>
+                <div class="card" style="width: 20rem;">
+                    <img src="https://cat-lab.co.kr/data/editor/2208/44260b1422d6d1c37cb8924eda0ff0da_1660874550_4264.jpg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                      <h4>name</h4>   
+                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>
