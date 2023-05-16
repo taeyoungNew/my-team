@@ -67,7 +67,27 @@
             margin: 0;
             box-sizing: border-box;
             padding: 25px;
-        } 
+        }
+        
+        
+        .container > .info-box > .info-card > div:nth-child(1) {
+            display: flex;
+            align-items: center;
+        }
+        
+        .container > .info-box > .info-card > div:nth-child(1) > .team-icon {
+            font-size: 30px;
+        }
+        .container > .info-box > .info-card > div:nth-child(1) > h3 {
+            margin-bottom: 0;
+            margin-left: 10px;
+        }
+        
+        .container  > .info-box > .info-card > .box-br {
+            border: 0.1px solid rgba(155, 149, 149, 0.822);
+            /* height: 1px; */
+        }
+        
         .container > .add-box {
             /* border: 1px solid black; */
             height: 100px;
@@ -107,7 +127,7 @@
             display: block;
             border: 1px solid black;
             width: 500px;
-            height: 300px;
+            /* height: 300px; */
             border-radius: 10px;
             padding: 20px;
             box-sizing: border-box;
@@ -118,6 +138,11 @@
             display: flex;
             flex-direction: column;
             justify-content: space-around;
+        }
+
+        .container > .input-container > .input-box > .input-list > .button {
+            margin-top: 1rem;
+            text-align: center;
         }
         
         .member-box {
@@ -139,6 +164,7 @@
             margin: 0;
         }
 
+
         .member-box > .member-list {
             display: flex;
             flex-wrap: wrap; 
@@ -158,22 +184,31 @@
     <script>
         function showAddBox() {
             $('.input-container').fadeToggle().css('display', 'flex');
+        }
+
+        function addMember() {  
             
+            alert('새멤버 추가')
         }
     </script>
 </head>
 <body>
+    <!-- 사이트 맨 위의 타이틀 -->
     <div class="title">
         <h1>9조를 소개 합니다!</h1>        
     </div>
 
     <div class="container">
+        <!-- 팀 소개 섹션 -->
         <div class="info-box">
             <div class="img-card">
             </div>
             <div class="info-card">
-                <i class="fa-solid fa-people-group"></i>
-                <h3>우리는요</h3>
+                <div>
+                    <i class="fa-solid fa-people-group team-icon"></i>
+                    <h3>팀 몬스터</h3>
+                </div>
+                <div class="box-br"></div>
                 <p>
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae ullam non sunt fugiat, quia facilis officiis porro beatae, optio cupiditate labore voluptas cumque necessitatibus culpa? Doloribus aperiam itaque facilis placeat.
                 </p>
@@ -183,11 +218,13 @@
                 </el>
             </div>
         </div>
-        <div class="add-box">
+        <!-- 새 멤버 추가 -->
+        <!-- <div class="add-box">
             <div class="line"></div>
             <i class="fa-solid fa-plus plus-button" onclick="showAddBox()"></i>
             <div class="line"></div>
         </div>
+    
         <div class="input-container">
             <div class="input-box">
                 <h4>새 멤버추가하기!</h4>
@@ -204,10 +241,14 @@
                         <span class="input-group-text">나의 TMI</span>
                         <textarea class="form-control" aria-label="With textarea" style="height: 100px;"></textarea>
                     </div>
-
+                    <div class="button">
+                        <button onclick="addMember()" type="button" class="btn btn-outline-primary">추가하기</button>
+                    </div>
                 </div>
             </div>
-        </div>
+        </div> -->
+        <br>
+        <br>
         <div class="member-box">
             <div>
                 <i class="fas fa-user icon"></i>
