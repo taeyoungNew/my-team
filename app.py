@@ -54,12 +54,31 @@ def objectIdDecoder(list):
     results.append(document)
   return results
 
-@app.route('/delete', methods=["delete"])
+@app.route('/delete', methods=["DELETE"])
 def deleteStory():
    id = ObjectId(request.form['storyId'])
    print('id = ', id)
    db.myteam.delete_one({"_id": ObjectId(id)})
-   return jsonify({"msg" : "아이디 잘 받았다."})
+   return jsonify({"msg" : "카드가 삭제되었습니다."})
+
+@app.route('/update', methods=["PUT"])
+def updateStory():
+   # imgUrl = request.form['newImgUrl']
+   contentId = request.form['id']
+   title = request.form['newTitle']
+   content = request.form['newContent']
+
+   doc = {
+      'contentId' : ObjectId(contentId),
+      'title' : title,
+      'content' : content
+   }
+   print("doc", doc['contentId'])
+
+
+   db.myteam.update_one({"_id": ObjectId(contentId)}, {'$set': {'storyTitle' : title, 'storyContent' : content}})
+
+   return jsonify({"msg" : "수정되었습니다."})
 
 if __name__ == '__main__':
    app.run('0.0.0.0', port=5000, debug=True)

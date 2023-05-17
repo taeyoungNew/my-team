@@ -19,7 +19,7 @@
         crossorigin="anonymous"
     >
     </script>
-    <title></title>
+    <title>민태영페이지</title>
     <style>
         body {
             margin: 0;
@@ -227,27 +227,32 @@
                     .then((data) => {
                         alert(data.msg)
                     })
-
+                window.location.reload();
             }
         }
 
         let param = "하이"
         let idList = []
+        let count = 0;
         function showMyStories() {
+            let test = 0;
+            let test1 = 1;
             // let objectId = new ObjectId();
             fetch('/story')
                 .then((res) => res.json())
                 .then((data) => {
                     for(let idx = 0; idx < data.length; idx++) {
-                        let paseData = data[idx].id
+                        let id = data[idx].id
                         // let paseData = objectId(data[idx].id)
-                        idList.push(data[idx].storyTitle)
+                        // idList.push(data[idx].storyTitle)
                         // console.log('paseData = ', data[idx].id)
-                        let temp = `<div class="my-story">
-                                        <div class="delete-btn" onclick=deleteStory('${data[idx].id}');>
-                                            <i class="fa-solid fa-xmark">
-                                        </i></div>
-                                        <div class="update-btn"><i class="fa-solid fa-wrench"></i></div>
+                        let temp = `<div id="story${count}" class="my-story">
+                                        <div  class="delete-btn" >
+                                            <i class="fa-solid fa-xmark" onclick=deleteStory('${id}');></i>
+                                        </div>
+                                        <div class="update-btn"  id="update-btn">
+                                            <i class="fa-solid fa-wrench" onclick=updateStory('${id}')></i>
+                                        </div>
                                         <img src="${data[idx].imgUrl}" height="60%" width="100%" alt="">
                                         <div class="text">
                                             <h4>${data[idx].storyTitle}</h4>
@@ -256,29 +261,17 @@
                                             </p>
                                         </div>
                                     </div>`    
-
-                        // let temp = `<div class="my-story">
-                        //     <div class="delete-btn" onclick="deleteStory(${idList})">
-                        //         <i class="fa-solid fa-xmark">
-                        //     </i></div>
-                        //     <div class="update-btn"><i class="fa-solid fa-wrench"></i></div>
-                        //     <img src="${data[idx].imgUrl}" height="60%" width="100%" alt="">
-                        //     <div class="text">
-                        //         <h4>${data[idx].storyTitle}</h4>
-                        //         <p>
-                        //             ${data[idx].storyContent}
-                        //         </p>
-                        //     </div>
-                        // </div>`    
-                                    $('.story-list').append(temp)
+    
+                        $('.story-list').append(temp)
+                        count++;
                     }
                     // console.log('data = ', data)
                     // let myStories = 
 
                 })
         }
-        function deleteStory(param) {
-            let storyId = param;
+        function deleteStory(getId) {
+            let storyId = getId;
             let formData = new FormData();
 
             formData.append('storyId', storyId)
@@ -286,11 +279,65 @@
                     method: "DELETE",
                     body: formData,
                 })
-                    .then((res) => res.json())
-                    .then((data) => {
-                        alert(data.msg)
+                .then((res) => res.json())
+                .then((data) => {
+                    alert(data.msg)
+                    window.location.reload();
                 })
         }
+
+        function updateStory(getId, $event) {
+            // let storyId = getId;
+            // console.log('getId = ', getId)
+            // console.log('event = ', event)
+            // console.log('event = ',event.target.parentElement.parentElement.id)
+            let cardId = event.target.parentElement.parentElement.id;
+            // console.log('cardId = ', cardId)
+            // 수정버튼 누를 시 수정버튼 삭제
+            $(`#${cardId}`).children('.update-btn').find('i').remove()
+            $(`#${cardId}`).children('.update-btn').append(`<i class="fa-solid fa-check" onclick="updateCom('${getId}')" ></i>`)
+
+            $(`#${cardId}`).children('.text').find('h4').remove()
+            $(`#${cardId}`).children('.text').find('p').remove()
+
+            $(`#${cardId}`)
+                .children('.text')
+                .append(`<div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon1">제목</span>
+                            <input id="new-title" type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-text">수정내용</span>
+                            <textarea id="new-content" class="form-control" aria-label="With textarea"></textarea>
+                        </div>`)
+            
+        }
+        
+        function updateCom(getId, $event) {
+            // console.log($event)
+            let id = getId;
+            let cardId = event.target.parentElement.parentElement.id;
+            let newTitle = $(`#${cardId}`).children('.text').find('div:eq(0)').find('input').val();
+            let newContent = $(`#${cardId}`).children('.text').find('div:eq(1)').find('input').val();;
+
+            let formData = new FormData();
+            formData.append('id', id);
+            formData.append('newTitle', newTitle);
+            formData.append('newContent', newContent);
+            fetch('/update', {
+                    method: "PUT",
+                    body: formData
+                })
+                .then((res) => res.json())
+                .then((data) => {
+                    alert(data.msg)
+                    window.location.reload();
+
+                })
+
+            console.log('newTitle = ', newTitle)
+        }
+
     </script>
 </head>
 <body>
@@ -342,9 +389,9 @@
         </div>
         <div class="story-box">
             <div class="story-list">
-                <div class="my-story">
+                <!-- <div class="my-story">
                     <div class="delete-btn"><i class="fa-solid fa-xmark"></i></div>
-                    <div class="update-btn"><i class="fa-solid fa-wrench"></i></div>
+                    <div class="update-btn" onclick="updateStory()"><i class="fa-solid fa-wrench"></i></div>
                     <img src="https://i.namu.wiki/i/IhFrc6uiSNlonNFRXzSNrKrhPKrjpmlmsB_SDg3x0PeW_L06BFuF7mOq8AcPDYjonfNpG64cQYsINU8sICeDpg.webp" height="60%" width="100%" alt="">
                     <div class="text">
                         <h4>타이틀</h4>
@@ -352,7 +399,7 @@
                             Lorem ipsum dolor sit, amet consectetur adipisicing elit. Obcaecati iure enim ad suscipit eveniet ullam tempora vel, magni praesentium, tenetur excepturi molestias deleniti quis illum quaerat odit doloribus sint ratione.
                         </p>
                     </div>
-                </div>
+                </div> -->
                 <!-- <div class="my-story">
                     <img src="https://i.namu.wiki/i/IhFrc6uiSNlonNFRXzSNrKrhPKrjpmlmsB_SDg3x0PeW_L06BFuF7mOq8AcPDYjonfNpG64cQYsINU8sICeDpg.webp" height="60%" width="100%" alt="">
                     <div class="text">
