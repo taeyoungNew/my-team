@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, jsonify
-from bson.json_util import dumps
+from bson.json_util import dumps, ObjectId
 from pymongo import MongoClient
 
 client = MongoClient('mongodb+srv://sparta:test@cluster0.iijkbtz.mongodb.net/?retryWrites=true&w=majority')
@@ -24,6 +24,7 @@ def addmember():
       'storyTitle' : storyTitle,
       'storyContent' : storyContent
    }
+   
    db.myteam.insert_one(doc)
    print(imgUrl, storyContent, storyTitle)
 
@@ -31,7 +32,7 @@ def addmember():
 
 @app.route('/story', methods=["GET"])
 def getStory():
-   myStories = list(db.myteam.find({}))
+   myStories = objectIdDecoder(list(db.myteam.find({})))
    # print(myStories)
    docs = []
    for story in myStories:
@@ -43,10 +44,22 @@ def getStory():
          'storyContent': story['storyContent']
       }
       docs.append(doc)
-
    # print('docs = ', docs)
-      
    return dumps(docs)
+
+def objectIdDecoder(list):
+  results=[]
+  for document in list:
+    document['_id'] = str(document['_id'])
+    results.append(document)
+  return results
+
+@app.route('/delete', methods=["delete"])
+def deleteStory():
+   id = ObjectId(request.form['storyId'])
+   print('id = ', id)
+   db.myteam.delete_one({"_id": ObjectId(id)})
+   return jsonify({"msg" : "아이디 잘 받았다."})
 
 if __name__ == '__main__':
    app.run('0.0.0.0', port=5000, debug=True)
