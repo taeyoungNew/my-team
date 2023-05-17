@@ -42,14 +42,44 @@
             margin-right: auto;
             padding: 20px;
             box-sizing: border-box;
-            border: 1px solid black;
+            /* border: 1px solid black; */
             width: 1500px; 
         }
 
         .container > .info-box {
-            border: 1px solid black;
-            height: 200px;   
+            /* border: 1px solid black; */
+            height: 250px;   
+            display: flex;
+            justify-content: space-evenly;
         }
+        .container > .info-box > .img-box {
+            background-image: url('https://ifh.cc/g/9WWDrf.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 250px;   
+        } 
+        .container > .info-box > div {
+            border-radius: 10px;
+            width: 35%;
+        }
+        .container > .info-box > .introduce {
+            padding: 20px;
+            box-sizing: border-box;
+            border: 1px solid black;
+        }
+        .container > .info-box > .introduce > h4 {
+            margin: 0;
+        }
+        .container > .info-box > .introduce > div {
+            border:1px solid rgba(128, 128, 128, 0.5);
+            border-radius: 1px;
+            width: 100px;
+        }
+        /* .container > .info-box {
+            border: 1px solid black;
+            height: 350px;   
+            
+        } */
         .container > .input-container {
             display: none;
             justify-content: center;
@@ -67,6 +97,10 @@
             box-sizing: border-box;
 
         }
+        .container > .input-container > .input-box:hover {            
+            border: 2px solid black;
+        }
+
         .container > .input-container > .input-box > .input-list {
             margin-top: 1rem;
             display: flex;
@@ -109,14 +143,15 @@
         .story-list {
             padding: 20px;
             box-sizing: border-box;
-            border: 1px solid black;
+            /* border: 1px solid black; */
             /* height: 500px; */
             display: flex;
-            justify-content: flex-start;
+            justify-content: space-between;
             flex-wrap: wrap;
         }
 
         .story-list > .my-story {
+            position: relative;
             border: 1px solid black;
             width: 45%;
             height: 400px;
@@ -124,7 +159,28 @@
             border-radius: 10px;
             margin: 1.651rem;
         }
+        .story-list > .my-story > div:nth-child(-n+2) {
+            position: absolute;
+            transform: translate(-50%, -50%);
+            top: 20px;
+            color: white;
+        }
+        
+        .story-list > .my-story > .delete-btn {
+            right: 0.1rem;
+            font-size: 30px;
+        }
+        .story-list > .my-story > .update-btn {
+            font-size: 23px;
+            right: 2.3rem;
+        }
 
+        .story-list > .my-story > .delete-btn:hover {
+            color: tomato;
+        }
+        .story-list > .my-story > .update-btn:hover {
+            color: dodgerblue;
+        }
         .story-list > .my-story > img {
             
             background-size: cover;
@@ -138,8 +194,11 @@
          
     </style>
     <script>
+        // const ObjectId = require('mongodb').ObjectId;
         $(document).ready(function () {
             showMyStories();
+            let meg = $('#my-introduce').val;
+            // console.log('meg = ', meg)
         });
         function showAddBox() {
             $('.input-container').fadeToggle().css('display', 'flex');
@@ -149,43 +208,87 @@
             let imgUrl = document.getElementById('img-url').value;
             let storyTitle = document.getElementById('story-title').value;
             let storyContent = document.getElementById('text').value;
-
+            // let str_space = /\s/; 
             // console.log(imgUrl, storyTitle, story)
             let formData = new FormData();
             
-            formData.append("imgUrl", imgUrl);
-            formData.append("storyTitle", storyTitle);
-            formData.append("storyContent", storyContent);
-            
-            fetch('/story', {
-                    method: "POST",
-                    body: formData,
-                })
-                .then((res) => res.json())
-                .then((data) => {
-                    alert(data.msg)
-                })
+            if(storyTitle.replace(/\s| /gi, "").length == 0 && storyContent.replace(/\s| /gi, "").length == 0) {
+                alert('타이틀 또는 내용이 빠졌어요')
+            } else {
+                formData.append("imgUrl", imgUrl);
+                formData.append("storyTitle", storyTitle);
+                formData.append("storyContent", storyContent);
+                
+                fetch('/story', {
+                        method: "POST",
+                        body: formData,
+                    })
+                    .then((res) => res.json())
+                    .then((data) => {
+                        alert(data.msg)
+                    })
+
+            }
         }
 
+        let param = "하이"
+        let idList = []
         function showMyStories() {
+            // let objectId = new ObjectId();
             fetch('/story')
                 .then((res) => res.json())
                 .then((data) => {
                     for(let idx = 0; idx < data.length; idx++) {
+                        let paseData = data[idx].id
+                        // let paseData = objectId(data[idx].id)
+                        idList.push(data[idx].storyTitle)
+                        // console.log('paseData = ', data[idx].id)
                         let temp = `<div class="my-story">
-                            <img src="${data[idx].imgUrl}" height="60%" width="100%" alt="">
-                            <div class="text">
-                                <h4>${data[idx].storyTitle}</h4>
-                                <p>
-                                    ${data[idx].storyContent}
-                                    </p>
-                                    </div>
+                                        <div class="delete-btn" onclick=deleteStory('${data[idx].id}');>
+                                            <i class="fa-solid fa-xmark">
+                                        </i></div>
+                                        <div class="update-btn"><i class="fa-solid fa-wrench"></i></div>
+                                        <img src="${data[idx].imgUrl}" height="60%" width="100%" alt="">
+                                        <div class="text">
+                                            <h4>${data[idx].storyTitle}</h4>
+                                            <p>
+                                                ${data[idx].storyContent}
+                                            </p>
+                                        </div>
                                     </div>`    
+
+                        // let temp = `<div class="my-story">
+                        //     <div class="delete-btn" onclick="deleteStory(${idList})">
+                        //         <i class="fa-solid fa-xmark">
+                        //     </i></div>
+                        //     <div class="update-btn"><i class="fa-solid fa-wrench"></i></div>
+                        //     <img src="${data[idx].imgUrl}" height="60%" width="100%" alt="">
+                        //     <div class="text">
+                        //         <h4>${data[idx].storyTitle}</h4>
+                        //         <p>
+                        //             ${data[idx].storyContent}
+                        //         </p>
+                        //     </div>
+                        // </div>`    
                                     $('.story-list').append(temp)
                     }
-                    console.log('data = ', data)
+                    // console.log('data = ', data)
                     // let myStories = 
 
+                })
+        }
+        function deleteStory(param) {
+            let storyId = param;
+            let formData = new FormData();
+
+            formData.append('storyId', storyId)
+            fetch('/delete', {
+                    method: "DELETE",
+                    body: formData,
+                })
+                    .then((res) => res.json())
+                    .then((data) => {
+                        alert(data.msg)
                 })
         }
     </script>
@@ -197,8 +300,19 @@
     </div>
     <div class="container">
         <div class="info-box">
+            <div class="img-box">
+                
+            </div>
+            <div  class="introduce">
+                <h4>민태영</h4>
+                <p id="my-introduce">
+                    저의 페이지에 오신걸 환영합니다!
+                    이번 내배캠에 참여하게된 민태영이라고 합니다. 
+                    잘 부탁드립니다~!
+                </p>
+            </div>
         </div>
-          <!-- 새 멤버 추가 -->
+          <!-- 새 글추가 -->
           <div class="add-box">
             <div class="line"></div>
             <i class="fa-solid fa-plus plus-button" onclick="showAddBox()"></i>
@@ -228,7 +342,9 @@
         </div>
         <div class="story-box">
             <div class="story-list">
-                <!-- <div class="my-story">
+                <div class="my-story">
+                    <div class="delete-btn"><i class="fa-solid fa-xmark"></i></div>
+                    <div class="update-btn"><i class="fa-solid fa-wrench"></i></div>
                     <img src="https://i.namu.wiki/i/IhFrc6uiSNlonNFRXzSNrKrhPKrjpmlmsB_SDg3x0PeW_L06BFuF7mOq8AcPDYjonfNpG64cQYsINU8sICeDpg.webp" height="60%" width="100%" alt="">
                     <div class="text">
                         <h4>타이틀</h4>
@@ -237,7 +353,7 @@
                         </p>
                     </div>
                 </div>
-                <div class="my-story">
+                <!-- <div class="my-story">
                     <img src="https://i.namu.wiki/i/IhFrc6uiSNlonNFRXzSNrKrhPKrjpmlmsB_SDg3x0PeW_L06BFuF7mOq8AcPDYjonfNpG64cQYsINU8sICeDpg.webp" height="60%" width="100%" alt="">
                     <div class="text">
                         <h4>타이틀</h4>
