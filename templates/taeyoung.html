@@ -288,6 +288,8 @@
                     window.location.reload();
                 })
         }
+
+
         // 수정하는 메소드
         function updateStory(getId, $event) {
             let cardId = event.target.parentElement.parentElement.id;
@@ -370,7 +372,7 @@
         </div>
         <div class="input-container">
             <div class="input-box">
-                <h4>새 글추가하기!</h4>
+                <h4>자신의 TMI 추가!</h4>
                 <div class="input-list">
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="inputGroup-sizing-default">이미지</span>
@@ -403,27 +405,29 @@
                         </p>
                     </div>
                 </div> -->
-                <!-- <div class="my-story">
-                    <img src="https://i.namu.wiki/i/IhFrc6uiSNlonNFRXzSNrKrhPKrjpmlmsB_SDg3x0PeW_L06BFuF7mOq8AcPDYjonfNpG64cQYsINU8sICeDpg.webp" height="60%" width="100%" alt="">
-                    <div class="text">
-                        <h4>타이틀</h4>
-                        <p>
-                            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Obcaecati iure enim ad suscipit eveniet ullam tempora vel, magni praesentium, tenetur excepturi molestias deleniti quis illum quaerat odit doloribus sint ratione.
-                        </p>
-                    </div>
-                </div>
-                <div class="my-story">
-                    <img src="https://i.namu.wiki/i/IhFrc6uiSNlonNFRXzSNrKrhPKrjpmlmsB_SDg3x0PeW_L06BFuF7mOq8AcPDYjonfNpG64cQYsINU8sICeDpg.webp" height="60%" width="100%" alt="">
-                    <div class="text">
-                        <h4>타이틀</h4>
-                        <p>
-                            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Obcaecati iure enim ad suscipit eveniet ullam tempora vel, magni praesentium, tenetur excepturi molestias deleniti quis illum quaerat odit doloribus sint ratione.
-                        </p>
-                    </div>
-                </div> -->
+               
             </div>
         </div>
+        
     </div>
-    
+    <div class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Modal title</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <p>Modal body text goes here.</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary">Save changes</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
 </body>
 </html>

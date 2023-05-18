@@ -48,6 +48,16 @@ def hoseokpage():
    print('호석님 페이지')
    return render_template('hoseok.html')
 
+@app.route('/jeongmi')
+def jeongmi():
+   print('정미님')
+   return render_template('jeongmi.html')
+
+@app.route('/changgeun')
+def changgeun():
+   print('창근님')
+   return render_template('changgeun.html')
+
 
 # 데이터 저장 처리
 # 태영
