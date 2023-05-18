@@ -224,10 +224,28 @@
         .container > .guest-book > .comment-list {
             /* border: 1px solid black; */
             height: 100vh;
-            width: 800px;
+            width: 100%;
             margin-right: auto;
             margin-left: auto;
             padding: 20px;
+        }
+
+        .container > .guest-book > .comment-list > .comment-icon {
+            display: flex;
+            border: none;
+            border-bottom: 1px solid #203A43;
+            border-radius: 0;
+            padding: 0 0 0 20px;
+
+        }
+
+        .container > .guest-book > .comment-list > .comment-icon > h3 { 
+            margin: 0;
+        }
+
+        .container > .guest-book > .comment-list > .comment-icon > i { 
+            font-size: 30px;
+            margin-right: 10px;
         }
         .container > .guest-book > .comment-list > div {
             padding: 20px;
@@ -244,6 +262,8 @@
             font-size: 20px;
             margin-right: 10px;
         }
+
+
     </style>
     <script>
         $(document).ready(function () {
@@ -402,7 +422,9 @@
         <div class="guest-book" id="guest-book">
             <div>
                 <div class="input-box">
-                    <h4>방명록</h4>
+                    <div>
+                        <h4>방명록</h4>
+                    </div>
                     <span>방문해 주셔서 감사합니당!</span>
                     <div class="input-list">
                         <div class="input-group mb-3">
@@ -421,7 +443,10 @@
                 </div>
             </div>
             <div class="comment-list" id="comment-list">
-                <h3>코멘트란</h3>
+                <div class="comment-icon">
+                    <i class="fa-solid fa-comments"></i>
+                    <h3>코멘트란</h3>
+                </div>
                 <br>
             </div>
         </div>
