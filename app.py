@@ -10,12 +10,21 @@ app = Flask(__name__)
 def home():
    return render_template('index.html')
 
+# 각멤버페이지의 루트
 @app.route('/taeyoung')
-def memberpage():
+def taeyoungpage():
    return render_template('taeyoung.html')
 
+@app.route('/heeyeun')
+def heeyeunpage():
+   print('희윤님 페이지')
+   return render_template('heeyeun.html')
+
+
+# 데이터 저장 처리
+# 태영
 @app.route('/story', methods=["POST"])
-def addmember():
+def addTaeyoungStory():
    imgUrl = request.form['imgUrl']
    storyTitle = request.form['storyTitle']
    storyContent = request.form['storyContent']
@@ -24,12 +33,29 @@ def addmember():
       'storyTitle' : storyTitle,
       'storyContent' : storyContent
    }
-   
+
+
    db.myteam.insert_one(doc)
    print(imgUrl, storyContent, storyTitle)
 
-   return jsonify({"msg" : "보내기 성공"})
+   return jsonify({"msg" : "저장 성공"})
 
+# 희윤님 
+@app.route('/heeyeunstory', methods=["POST"])
+def addHeeYeunStory():
+   storyTitle = request.form['storyTitle']
+   storyContent = request.form['storyContent']
+   doc = {
+      'storyTitle' : storyTitle,
+      'storyContent' : storyContent
+   }
+   db.heeyeun.insert_one(doc)
+   # print(doc)
+   return jsonify({"msg" : "저장 성공"})
+
+
+# 데이터 가져오기
+# 태영
 @app.route('/story', methods=["GET"])
 def getStory():
    myStories = objectIdDecoder(list(db.myteam.find({})))
@@ -54,6 +80,26 @@ def objectIdDecoder(list):
     results.append(document)
   return results
 
+# 희윤님
+@app.route('/heeyeunstory', methods=["GET"])
+def getHeeyuenStory():
+   # list(db.fans.find({}, {'_id': False}))
+   myStories = list(db.heeyeun.find({}, {'_id': False}))
+   print('myStories = ', myStories)
+   # docs = []
+   # for story in myStories:
+   #    # print(story)
+   #    doc = {
+   #       'storyTitle' : story['storyTitle'],
+   #       'storyContent': story['storyContent']
+   #    }
+   #    docs.append(doc)
+   # print('docs = ', docs)
+   return myStories 
+
+
+
+# 데이터 삭제
 @app.route('/delete', methods=["DELETE"])
 def deleteStory():
    id = ObjectId(request.form['storyId'])
@@ -61,6 +107,8 @@ def deleteStory():
    db.myteam.delete_one({"_id": ObjectId(id)})
    return jsonify({"msg" : "카드가 삭제되었습니다."})
 
+
+# 데이터 수정
 @app.route('/update', methods=["PUT"])
 def updateStory():
    # imgUrl = request.form['newImgUrl']
@@ -79,6 +127,10 @@ def updateStory():
    db.myteam.update_one({"_id": ObjectId(contentId)}, {'$set': {'storyTitle' : title, 'storyContent' : content}})
 
    return jsonify({"msg" : "수정되었습니다."})
+
+
+
+
 
 if __name__ == '__main__':
    app.run('0.0.0.0', port=5000, debug=True)
