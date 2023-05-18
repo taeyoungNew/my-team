@@ -73,7 +73,7 @@ def updateStory():
       'title' : title,
       'content' : content
    }
-   print("doc", doc['contentId'])
+   print("doc = ", doc)
 
 
    db.myteam.update_one({"_id": ObjectId(contentId)}, {'$set': {'storyTitle' : title, 'storyContent' : content}})

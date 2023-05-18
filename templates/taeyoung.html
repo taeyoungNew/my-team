@@ -215,6 +215,9 @@
             if(storyTitle.replace(/\s| /gi, "").length == 0 && storyContent.replace(/\s| /gi, "").length == 0) {
                 alert('타이틀 또는 내용이 빠졌어요')
             } else {
+                // if(imgUrl === "") {
+                //     imgUrl = "https://ifh.cc/g/FnYglp.jpg"
+                // }
                 formData.append("imgUrl", imgUrl);
                 formData.append("storyTitle", storyTitle);
                 formData.append("storyContent", storyContent);
@@ -237,6 +240,7 @@
         function showMyStories() {
             let test = 0;
             let test1 = 1;
+            let imgErr = "https://ifh.cc/g/FnYglp.jpg"
             // let objectId = new ObjectId();
             fetch('/story')
                 .then((res) => res.json())
@@ -253,7 +257,7 @@
                                         <div class="update-btn"  id="update-btn">
                                             <i class="fa-solid fa-wrench" onclick=updateStory('${id}')></i>
                                         </div>
-                                        <img src="${data[idx].imgUrl}" height="60%" width="100%" alt="">
+                                        <img src="${data[idx].imgUrl}" height="60%" width="100%" onerror="this.src='${imgErr}'">
                                         <div class="text">
                                             <h4>${data[idx].storyTitle}</h4>
                                             <p>
@@ -318,24 +322,28 @@
             let id = getId;
             let cardId = event.target.parentElement.parentElement.id;
             let newTitle = $(`#${cardId}`).children('.text').find('div:eq(0)').find('input').val();
-            let newContent = $(`#${cardId}`).children('.text').find('div:eq(1)').find('input').val();;
+            let newContent = $(`#${cardId}`).children('.text').find('div:eq(1)').find('textarea').val();;
+            console.log('newContent = ', newContent)
 
-            let formData = new FormData();
-            formData.append('id', id);
-            formData.append('newTitle', newTitle);
-            formData.append('newContent', newContent);
-            fetch('/update', {
-                    method: "PUT",
-                    body: formData
-                })
-                .then((res) => res.json())
-                .then((data) => {
-                    alert(data.msg)
-                    window.location.reload();
-
-                })
-
-            console.log('newTitle = ', newTitle)
+            if(newTitle.replace(/\s| /gi, "").length == 0 && newContent.replace(/\s| /gi, "").length == 0) {
+                return alert('타이틀 또는 내용이 빠졌어요')
+            } else {
+                let formData = new FormData();
+                formData.append('id', id);
+                formData.append('newTitle', newTitle);
+                formData.append('newContent', newContent);
+                fetch('/update', {
+                        method: "PUT",
+                        body: formData
+                    })
+                    .then((res) => res.json())
+                    .then((data) => {
+                        alert(data.msg)
+                        window.location.reload();
+    
+                    })
+            }
+            // console.log('newTitle = ', newTitle)
         }
 
     </script>

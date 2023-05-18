@@ -40,8 +40,9 @@
         .container {
             padding: 30px;
             box-sizing: border-box;
-            border: 1px solid black;
-            width: 1500px
+            /* border: 1px solid black; */
+            width: 1500px;
+            background-color: white;
         }
         .container > .info-box {
             /* border: 1px solid black; */
@@ -70,6 +71,7 @@
         }
         
         
+        
         .container > .info-box > .info-card > div:nth-child(1) {
             display: flex;
             align-items: center;
@@ -82,8 +84,12 @@
             margin-bottom: 0;
             margin-left: 10px;
         }
+
+        .container > .info-box > .info-card > el > li {
+            list-style: none;
+        }
         
-        .container  > .info-box > .info-card > .box-br {
+        .container .box-br {
             border: 0.1px solid rgba(155, 149, 149, 0.822);
             /* height: 1px; */
         }
@@ -175,6 +181,7 @@
         .member-box > .member-list > .card {
             margin-bottom: 20px;
             cursor: pointer;
+            border-radius: 10px;
         }
         .box-padding {
             padding: 20px;
@@ -214,11 +221,13 @@
                 </div>
                 <div class="box-br"></div>
                 <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae ullam non sunt fugiat, quia facilis officiis porro beatae, optio cupiditate labore voluptas cumque necessitatibus culpa? Doloribus aperiam itaque facilis placeat.
+                    
                 </p>
                 <el>
-                    <li>팀 각오: 어쩌구</li>
-                    <li>특징 1: 어쩌구</li>
+                    <li>팀 몬스터인 이유 : <- 마신것처럼 지치지않고 끝까지 가자</li>
+                    <li>각오 : 어쩌구</li>
+                    <li>특징 : 모두 30대</li>
+                    
                 </el>
             </div>
         </div>
@@ -257,13 +266,14 @@
             <div>
                 <i class="fas fa-user icon"></i>
                 <h3>우리 멤버 보고가세요~</h3>
+                <div class="box-br"></div>
             </div>
             <div class="member-list">
                 <div class="card" style="width: 20rem;" onclick="showpage('taeyoung.html')">
-                    <img src="https://cat-lab.co.kr/data/editor/2208/44260b1422d6d1c37cb8924eda0ff0da_1660874550_4264.jpg" class="card-img-top" alt="...">
+                    <img src="https://ifh.cc/g/9WWDrf.jpg" class="card-img-top" alt="...">
                     <div class="card-body">
-                        <h4>name</h4>
-                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <h4>민태영</h4>
+                      <p class="card-text">이번 내배캠에 참여하게된 민태영이라고 합니다. 4개월 동안 잘부탁드립니다!.</p>
                     </div>
                 </div>
                 <div class="card" style="width: 20rem;">
