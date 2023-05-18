@@ -43,6 +43,11 @@ def heeyeunpage():
    print('희윤님 페이지')
    return render_template('heeyeun.html')
 
+@app.route('/hoseok')
+def hoseokpage():
+   print('호석님 페이지')
+   return render_template('hoseok.html')
+
 
 # 데이터 저장 처리
 # 태영
