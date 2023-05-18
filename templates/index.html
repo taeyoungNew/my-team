@@ -69,9 +69,6 @@
             padding: 25px;
             margin: 0;
         }
-        
-        
-        
         .container > .info-box > .info-card > div:nth-child(1) {
             display: flex;
             align-items: center;
@@ -187,8 +184,73 @@
             padding: 20px;
             box-sizing: border-box;
         }
+
+        .container > .guest-book > div:nth-child(1) {
+            display: flex;
+            justify-content: center;
+            /* flex-direction: column; */
+            /* height: 200px; */
+        }
+
+
+        .container > .guest-book > div:nth-child(1) > .input-box {
+            display: inline-block;
+            margin-left: auto;
+            margin-right: auto;
+            border: 1px solid black;
+            width: 500px;
+            /* height: 300px; */
+            border-radius: 10px;
+            padding: 20px;
+            box-sizing: border-box;
+
+        }
+        .container > .guest-book > .input-box:hover {            
+            border: 2px solid black;
+        }
+
+        .container > .guest-book > .input-box > .input-list {
+            margin-top: 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+        }
+
+        .container > .guest-book > .input-box > .input-list > .button {
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        .container > .guest-book > .comment-list {
+            /* border: 1px solid black; */
+            height: 100vh;
+            width: 800px;
+            margin-right: auto;
+            margin-left: auto;
+            padding: 20px;
+        }
+        .container > .guest-book > .comment-list > div {
+            padding: 20px;
+            box-sizing: border-box;
+            border: 1px solid black;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        .container > .guest-book > .comment-list > div > div > .p-2 > div:nth-child(1) {
+            display: flex;
+            align-items: center;
+        }
+        .container > .guest-book > .comment-list > div > div > .p-2 > div:nth-child(1) > i{
+            font-size: 20px;
+            margin-right: 10px;
+        }
     </style>
     <script>
+        $(document).ready(function () {
+            getComments();
+            // let meg = $('#my-introduce').val;
+
+        });
         function showAddBox() {
             $('.input-container').fadeToggle().css('display', 'flex');
         }
@@ -201,6 +263,59 @@
 
         function addMember() {
             document.getElementById()
+        }
+        
+        // 방명록 코멘트 저장하기
+        function saveComment() {
+            let formData = new FormData()
+            let guestName = $('#guest-name').val()
+            let commentText = $('#comment-text').val()
+
+            console.log('코멘트 추가하기', guestName, commentText)
+
+            formData.append("guestName", guestName);
+            formData.append("commentText", commentText)
+
+            fetch('/guestbook', {
+                    method : "POST",
+                    body : formData
+                })
+                .then((res) => res.json())
+                .then((data) => {
+                    console.log('msg', data.msg)
+                })
+
+            window.location.reload();
+        }
+
+        // 방명록 코멘트 불러오기
+        function getComments() {
+           fetch('/guestbook')
+            .then((res) => res.json())
+            .then((data) => {
+                // console.log('msg', data.rows)
+                let rows = data.rows
+                rows.map((el) => {
+                    console.log(el)
+                    $('#comment-list').append(`<div>
+                                                <div class="d-flex flex-column comment-section">
+                                                    <div class="bg-white p-2">
+                                                        <div>
+                                                            <i class="fa-regular fa-user"></i>
+                                                            <div class="d-flex flex-column justify-content-start ml-2"><span class="d-block font-weight-bold name">${el.guestName}</span></div>
+                                                        </div>
+                                                        <div class="mt-2">
+                                                            <p class="comment-text">${el.commentText}</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>`)
+                })
+
+
+            })
+
+
         }
         
     </script>
@@ -233,37 +348,9 @@
                 </el>
             </div>
         </div>
-        <!-- 새 멤버 추가 -->
-        <!-- <div class="add-box">
-            <div class="line"></div>
-            <i class="fa-solid fa-plus plus-button" onclick="showAddBox()"></i>
-            <div class="line"></div>
-        </div>
-    
-        <div class="input-container">
-            <div class="input-box">
-                <h4>새 멤버추가하기!</h4>
-                <div class="input-list">
-                    <div class="input-group mb-3">
-                        <span class="input-group-text" id="inputGroup-sizing-default name">이름</span>
-                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-                    </div>
-                    <div class="input-group mb-3">
-                        <span class="input-group-text" id="inputGroup-sizing-default img">이미지</span>
-                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-                    </div>
-                    <div class="input-group">
-                        <span class="input-group-text">나의 TMI</span>
-                        <textarea class="form-control" aria-label="With textarea" id="text" style="height: 100px;"></textarea>
-                    </div>
-                    <div class="button">
-                        <button onclick="addMember()" type="button" class="btn btn-outline-primary">추가하기</button>
-                    </div>
-                </div>
-            </div>
-        </div> -->
         <br>
         <br>
+        <!-- 멤버 카드 섹션 -->
         <div class="member-box">
             <div>
                 <i class="fas fa-user icon"></i>
@@ -281,7 +368,7 @@
                 <div class="card" style="width: 20rem;" onclick="showpage('/heeyeun')">
                     <img src="https://cat-lab.co.kr/data/editor/2208/44260b1422d6d1c37cb8924eda0ff0da_1660874550_4264.jpg" class="card-img-top" alt="...">
                     <div class="card-body">
-                      <h4>name</h4>   
+                      <h4>정희윤</h4>   
                       <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                     </div>
                 </div>
@@ -305,8 +392,37 @@
                       <h4>name</h4>   
                       <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                     </div>
+                    
                 </div>
 
+            </div>
+        </div>
+        <br>
+        <!-- 방명록 -->
+        <div class="guest-book" id="guest-book">
+            <div>
+                <div class="input-box">
+                    <h4>방명록</h4>
+                    <span>방문해 주셔서 감사합니당!</span>
+                    <div class="input-list">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="inputGroup-sizing-default">이름</span>
+                            <input type="text" id="guest-name" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-text">댓글</span>
+                            <textarea class="form-control" id="comment-text" aria-label="With textarea" style="height: 100px;"></textarea>
+                        </div>
+                        <br>
+                        <div class="button">
+                            <button onclick="saveComment()" type="button" class="btn btn-outline-primary">추가하기</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="comment-list" id="comment-list">
+                <h3>코멘트란</h3>
+                <br>
             </div>
         </div>
     </div>
