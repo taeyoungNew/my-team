@@ -10,6 +10,29 @@ app = Flask(__name__)
 def home():
    return render_template('index.html')
 
+# 방명록 루트
+# 유저이름 & 코멘트 저장하기
+@app.route('/guestbook', methods=["POST"])
+def saveComments():
+   guestName = request.form['guestName'];
+   commentText = request.form['commentText']
+   print(guestName, commentText)
+   doc = {
+      'guestName' : guestName,
+      'commentText' : commentText
+   }
+   succes = db.guestbook.insert_one(doc)
+   return jsonify({'msg' : '연결됨'})
+
+# 유지이름 & 코멘트 불러오기
+@app.route('/guestbook', methods=["GET"])
+def getComments():
+   docs = list(db.guestbook.find({}, {'_id': False}))
+   print(docs)
+
+   return jsonify({'rows' : docs})
+
+
 # 각멤버페이지의 루트
 @app.route('/taeyoung')
 def taeyoungpage():
@@ -97,6 +120,11 @@ def getHeeyuenStory():
    # print('docs = ', docs)
    return myStories 
 
+
+
+# 방명록 게스트이름과 댓글 저장
+# @app.route('/', methods=["POST"])
+# def
 
 
 # 데이터 삭제
