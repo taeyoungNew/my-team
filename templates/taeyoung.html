@@ -44,6 +44,8 @@
             box-sizing: border-box;
             /* border: 1px solid black; */
             width: 1500px; 
+            background-color: white;
+            height: 100vh;
         }
 
         .container > .info-box {
@@ -194,30 +196,27 @@
          
     </style>
     <script>
-        // const ObjectId = require('mongodb').ObjectId;
+
         $(document).ready(function () {
             showMyStories();
             let meg = $('#my-introduce').val;
-            // console.log('meg = ', meg)
+
         });
         function showAddBox() {
             $('.input-container').fadeToggle().css('display', 'flex');
         }
-
+        
+        // 추가하는 메소드 
         function addNewStory() {
             let imgUrl = document.getElementById('img-url').value;
             let storyTitle = document.getElementById('story-title').value;
             let storyContent = document.getElementById('text').value;
-            // let str_space = /\s/; 
-            // console.log(imgUrl, storyTitle, story)
             let formData = new FormData();
             
             if(storyTitle.replace(/\s| /gi, "").length == 0 && storyContent.replace(/\s| /gi, "").length == 0) {
                 alert('타이틀 또는 내용이 빠졌어요')
             } else {
-                // if(imgUrl === "") {
-                //     imgUrl = "https://ifh.cc/g/FnYglp.jpg"
-                // }
+
                 formData.append("imgUrl", imgUrl);
                 formData.append("storyTitle", storyTitle);
                 formData.append("storyContent", storyContent);
@@ -237,19 +236,19 @@
         let param = "하이"
         let idList = []
         let count = 0;
+
+        // 페이지가 열렸을때 데이터들을 불러오는 메소드
         function showMyStories() {
             let test = 0;
             let test1 = 1;
             let imgErr = "https://ifh.cc/g/FnYglp.jpg"
-            // let objectId = new ObjectId();
+  
             fetch('/story')
                 .then((res) => res.json())
                 .then((data) => {
                     for(let idx = 0; idx < data.length; idx++) {
                         let id = data[idx].id
-                        // let paseData = objectId(data[idx].id)
-                        // idList.push(data[idx].storyTitle)
-                        // console.log('paseData = ', data[idx].id)
+        
                         let temp = `<div id="story${count}" class="my-story">
                                         <div  class="delete-btn" >
                                             <i class="fa-solid fa-xmark" onclick=deleteStory('${id}');></i>
@@ -269,11 +268,11 @@
                         $('.story-list').append(temp)
                         count++;
                     }
-                    // console.log('data = ', data)
-                    // let myStories = 
+
 
                 })
         }
+        // 삭제하는 메소드
         function deleteStory(getId) {
             let storyId = getId;
             let formData = new FormData();
@@ -289,12 +288,8 @@
                     window.location.reload();
                 })
         }
-
+        // 수정하는 메소드
         function updateStory(getId, $event) {
-            // let storyId = getId;
-            // console.log('getId = ', getId)
-            // console.log('event = ', event)
-            // console.log('event = ',event.target.parentElement.parentElement.id)
             let cardId = event.target.parentElement.parentElement.id;
             // console.log('cardId = ', cardId)
             // 수정버튼 누를 시 수정버튼 삭제
