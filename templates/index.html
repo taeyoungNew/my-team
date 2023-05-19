@@ -188,6 +188,7 @@
         .container > .guest-book > div:nth-child(1) {
             display: flex;
             justify-content: center;
+
             /* flex-direction: column; */
             /* height: 200px; */
         }
@@ -197,6 +198,7 @@
             display: inline-block;
             margin-left: auto;
             margin-right: auto;
+            margin-bottom: 10px;
             border: 1px solid black;
             width: 500px;
             /* height: 300px; */
@@ -235,7 +237,8 @@
             border: none;
             border-bottom: 1px solid #203A43;
             border-radius: 0;
-            padding: 0 0 0 20px;
+            padding: 5px;
+            
 
         }
 
@@ -263,6 +266,54 @@
             margin-right: 10px;
         }
 
+        .mt-2 {
+            background-color: #E9EDF1;
+            min-height: 40px;
+            border-radius: 5px;
+            font-size: 16px;
+            padding: 5px;
+            box-sizing: border-box;
+        }
+
+        .comment-box {
+            
+            /* border: 1px solid black; */
+            position: relative;
+        }
+
+        .comment-box > div:nth-child(1) {
+            /* padding: 5px; */
+            box-sizing: border-box;
+        }
+
+        .comment-box > .x-mark, .pen-icon {
+            top: 1.5rem;
+            position: absolute;
+            color: black;
+            transform: translate(-50%, -50%) ;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .comment-box > .x-mark {
+            right: 0.1em;
+            font-size: 30px;
+        }
+       
+        .comment-box > .pen-icon {
+            right: 2em;
+
+            
+            
+        }
+        .comment-box > .x-mark:hover {
+            color: tomato;
+        }
+        
+        
+        .comment-box > .pen-icon:hover {
+            color: dodgerblue;
+        }
 
     </style>
     <script>
@@ -310,26 +361,36 @@
 
         // 방명록 코멘트 불러오기
         function getComments() {
+            let cnt = 0;
            fetch('/guestbook')
             .then((res) => res.json())
             .then((data) => {
                 // console.log('msg', data.rows)
                 let rows = data.rows
                 rows.map((el) => {
-                    console.log(el)
-                    $('#comment-list').append(`<div>
+                    console.log(el.guestName)
+                    $('#comment-list').append(`<div id="commet${cnt}">
                                                 <div class="d-flex flex-column comment-section">
-                                                    <div class="bg-white p-2">
-                                                        <div>
+                                                    <div class="bg-white p-2 comment-box">
+                                                        <div class="user-name">
                                                             <i class="fa-regular fa-user"></i>
-                                                            <div class="d-flex flex-column justify-content-start ml-2"><span class="d-block font-weight-bold name">${el.guestName}</span></div>
+                                                            <div class="user d-flex flex-column justify-content-start ml-2"><span class="d-block font-weight-bold name">${el.guestName}</span></div>
                                                         </div>
-                                                        <div class="mt-2">
-                                                            <p class="comment-text">${el.commentText}</p>
+                                                        <div>    
+                                                            <div class="mt-2 comment">
+                                                                <p class="comment-text">${el.commentText}</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="pen-icon" >
+                                                            <i class="fa-solid fa-pen" onclick="updateComment('${el._id}')"></i>
+                                                        </div>
+                                                        <div class="x-mark" onclick="deleteComment('${el._id}')">
+                                                            <i class="fa-solid fa-xmark"></i>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>`)
+                    cnt++
                 })
 
 
@@ -337,6 +398,80 @@
 
 
         }
+        // 코멘트 삭제메소드
+        function deleteComment(param) {
+            console.log(param)
+            let commentId = param;
+            let formData =  new FormData();
+            formData.append("commentId", commentId);
+            fetch('/guestbook', {
+                method: "DELETE",
+                body: formData
+            })
+            .then((res) => res.json())
+            .then((data) => {
+                alert(data.msg)
+                window.location.reload();
+            })
+        }
+        // 코멘트 수정메소드
+        function updateComment(commentId, $event) {
+            let cardId = event.target.parentElement.parentElement.parentElement.parentElement.id;
+            console.log('cardId = ', cardId)
+            let comment = $(`#${cardId}`).find('.comment-text').text()
+
+            $(`#${cardId}`).find('.fa-user').remove();
+            $(`#${cardId}`).find('.user').remove();
+            $(`#${cardId}`).find('.comment-text').remove();
+            $(`#${cardId}`).find('.pen-icon').children('i').remove();
+            
+
+
+            $(`#${cardId}`).find('.pen-icon').append(`<i class="fa-solid fa-check" onclick="updateCom('${commentId}')"></i>`)
+            $(`#${cardId}`).find(`.user-name`).append(`<div class="input-group mb-3" style="width:200px">
+                                                            <span class="input-group-text" id="basic-addon1">새 이름</span>
+                                                            <input type="text" class="form-control new-name" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                                                        </div>`)
+            $(`#${cardId}`).find('.comment').append(`<div class="input-group">
+                                                        <span class="input-group-text">With textarea</span>
+                                                        <textarea id="new-comment" class="form-control" aria-label="With textarea"></textarea>
+                                                    </div>`)
+            
+        }
+        // 업데이트 기능 완성 시키기!1
+        function updateCom(param, $event) {
+            // console.log($event)
+            // let cardId = param;
+            let cardId = event.target.parentElement.parentElement.parentElement.parentElement.id;
+            console.log('cardId', cardId)
+        
+            // console.log('cardId', cardId)
+            // 수정된 이름과 내용을 가져온다.
+            let newName = $(`#${cardId}`).find('.new-name').val();
+            let newComment = $(`#${cardId}`).find('#new-comment').val();
+            console.log('newComment = ', newName)
+
+            if(newName.replace(/\s| /gi, "").length == 0 && newComment.replace(/\s| /gi, "").length == 0) {
+                return alert('이름 또는 내용이 빠졌어요')
+            } else {
+                let formData = new FormData();
+                formData.append('id', param);
+                formData.append('newName', newName);
+                formData.append('newComment', newComment);
+                fetch('/guestbook', {
+                        method: "PUT",
+                        body: formData
+                    })
+                    .then((res) => res.json())
+                    .then((data) => {
+                        alert(data.msg)
+                        window.location.reload();
+    
+                    })
+            }
+            // console.log('newTitle = ', newTitle)
+        }
+
         
     </script>
 </head>
@@ -446,7 +581,33 @@
                     <i class="fa-solid fa-comments"></i>
                     <h3>코멘트란</h3>
                 </div>
+                
                 <br>
+                <!-- 코멘트들 -->
+                <div>
+                    <div class="d-flex flex-column comment-section">
+                        <div class="bg-white p-2 comment-box">
+                            <div>
+                                <i class="fa-regular fa-user"></i>
+                                <div class="d-flex flex-column justify-content-start ml-2"><span class="d-block font-weight-bold name">이름</span></div>
+                            </div>
+                            <div class="mt-2">
+                                <p class="comment-text">코멘트</p>
+                            </div>
+                            <!-- <div class="input-group">
+                                <span class="input-group-text">수정내용</span>
+                                <textarea id="new-content" class="form-control" aria-label="With textarea"></textarea>
+                            </div> -->
+
+                            <div class="x-mark" onclick="deleteComment()">
+                                <i class="fa-solid fa-xmark"></i>
+                            </div>
+                            <div class="pen-icon" onclick="updateComment()">
+                                <i class="fa-solid fa-pen"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -18,19 +18,46 @@ def saveComments():
    commentText = request.form['commentText']
    print(guestName, commentText)
    doc = {
+      
       'guestName' : guestName,
       'commentText' : commentText
    }
    succes = db.guestbook.insert_one(doc)
    return jsonify({'msg' : '연결됨'})
 
-# 유지이름 & 코멘트 불러오기
+# 유저이름 & 코멘트 불러오기
 @app.route('/guestbook', methods=["GET"])
 def getComments():
-   docs = list(db.guestbook.find({}, {'_id': False}))
+   docs = objectIdDecoder(list(db.guestbook.find({})))
    print(docs)
 
    return jsonify({'rows' : docs})
+def objectIdDecoder(list):
+  results=[]
+  for document in list:
+    document['_id'] = str(document['_id'])
+    results.append(document)
+  return results
+
+# 유저코멘트 지우기
+@app.route('/guestbook', methods=["DELETE"])
+def deleteCommets():
+   print('잘옴')
+   commentId = ObjectId(request.form['commentId'])
+   db.guestbook.delete_one({"_id": commentId})
+   # db.guestbook.delete_one({"_id": ObjectId(id)})
+   return jsonify({"msg" : "카드가 삭제되었습니다."})
+
+# 유저코멘트 수정
+@app.route('/guestbook', methods=["PUT"])
+def updateComment():
+   print('updateComment')
+   dataId = request.form['id']
+   newName = request.form['newName'];
+   newComment = request.form['newComment']
+
+   db.guestbook.update_one({"_id": ObjectId(dataId)}, {'$set': {'guestName' : newName, 'commentText' : newComment}})
+   return jsonify({'msg' : '수정되었습니다.'})
 
 
 # 각멤버페이지의 루트
@@ -92,7 +119,7 @@ def addHeeYeunStory():
    return jsonify({"msg" : "저장 성공"})
 
 
-# 데이터 가져오기
+# 개인페이지 데이터 가져오기
 # 태영
 @app.route('/story', methods=["GET"])
 def getStory():
@@ -110,7 +137,6 @@ def getStory():
       docs.append(doc)
    # print('docs = ', docs)
    return dumps(docs)
-
 def objectIdDecoder(list):
   results=[]
   for document in list:
@@ -142,7 +168,8 @@ def getHeeyuenStory():
 # def
 
 
-# 데이터 삭제
+# 
+# 태영 개인페이지 데이터 삭제
 @app.route('/delete', methods=["DELETE"])
 def deleteStory():
    id = ObjectId(request.form['storyId'])
@@ -151,7 +178,7 @@ def deleteStory():
    return jsonify({"msg" : "카드가 삭제되었습니다."})
 
 
-# 데이터 수정
+# 태영 개인페이지 데이터 수정
 @app.route('/update', methods=["PUT"])
 def updateStory():
    # imgUrl = request.form['newImgUrl']
